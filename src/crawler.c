@@ -1,17 +1,35 @@
 #include <stdio.h>
 #include <string.h>
+#include "include/client.h"
 
-#define URL_MAX_LEN 1000
+#define MAX_URL_LEN 1000
+#define MAX_REQUEST_LEN 1000
 #define CLI_INDEX_URL 1
+#define REQUEST_GET "GET HTTP/1.1\r\n"
+#define REQUEST_USERAGENT "User-Agent: chungw4\r\n"
 
 int main(int argc, char const *argv[])
 {
-    char input_url[URL_MAX_LEN];
+    char input_url[URL_MAX_LEN] = {0};
+    char request_head[MAX_REQUEST_LEN] = {0};
 
     //Init vars
-    input_url = malloc(URL_MAX_LEN*sizeof(char));
-    memset(input_url, '\0', URL_MAX_LEN);
-    
+    input_url = malloc(MAX_URL_LEN*sizeof(char));
+    if (!input_url)
+    {
+        printf("\nmalloc() failed!\n");
+        return -1;
+    }
+    memset(input_url, '\0', MAX_URL_LEN);
+
+    request_head = malloc(MAX_REQUEST_LEN*sizeof(char));
+    if (!request_head)
+    {
+        printf("\nmalloc() failed!\n");
+        return -1;
+    }
+    memset(request_head, '\0', sizeof(request_head));
+
     //Take input url from command line argument
     if (argc <= 1)
     {

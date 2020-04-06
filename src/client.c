@@ -1,22 +1,44 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 
 #define PORT 8080
-#define REQUEST_MAX_LEN 1000
-#define BUFFER_MAX_LEN 1024
+#define MAX_BUFFER_LEN 1024
 
-string connect_to(char* url)
+char* connect_to(char* url, char* request, int max_response_len)
 {
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
-    char request[REQUEST_MAX_LEN] = {0};
-    char buffer [BUFFER_MAX_LEN] = {0};
+    char buffer[MAX_BUFFER_LEN] = {0};
+    char *ret_response = NULL;
 
-    //Create request
+    //Init char arrays
+    buffer = malloc(MAX_BUFFER_LEN*sizeof(char));
+    if (!buffer)
+    {
+        printf("\nmalloc() failed!\n");
+        return(-1);
+    }
+    memset(buffer, 0, sizeof(buffer));
 
+    serv_addr = (sockaddr_in*)malloc(sizeof(sockaddr_in));
+    if (!serv_addr)
+    {
+        printf("\nmalloc() failed!\n");
+        return(-1);
+    }
+    memset(&serv_addr, 0, sizeof(serv_addr));
+
+    ret_response = malloc(max_response_len*sizeof(char));
+    if (!ret_response)
+    {
+        printf("\nmalloc() failed!\n");
+        return(-1);
+    }
+    memset(ret_response, 0, sizeof(ret_response));
 
     //Create socket
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
@@ -44,10 +66,22 @@ string connect_to(char* url)
     }
 
     //Send request
-
+    send(sock, request, strlen(request), 0);
 
     //Read response
+    while((valread = read(sock, buffer, sizeof(buffer) - 1)) > 0)
+     {
+         if (strlen(buffer) + strlen(ret_response) < max_response_len)
+         {
+             strcat(ret_response, buffer);
+         }
+     }
 
 
-    //Return reponse
+    //Garbage collection
+    free(buffer);
+    free(serv_addr);
+
+    //Return response
+    return ret_response;
 }
