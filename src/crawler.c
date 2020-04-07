@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include "include/client.h"
+#include "../include/client.h"
+#include "../include/parser.h"
 
 #define MAX_URL_LEN 1000
 #define MAX_REQUEST_LEN 1000
