@@ -24,8 +24,8 @@ char* connect_to(char* url, char* request, int max_response_len)
     }
     memset(buffer, 0, sizeof(buffer));
 
-    serv_addr = (struct sockaddr_in*)malloc(sizeof(sockaddr_in));
-    if (!serv_addr)
+    serv_addr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
+    if (!&serv_addr)
     {
         printf("\nmalloc() failed!\n");
         exit(EXIT_FAILURE);
@@ -80,7 +80,7 @@ char* connect_to(char* url, char* request, int max_response_len)
 
     //Garbage collection
     free(buffer);
-    free(*serv_addr);
+    free(&serv_addr);
 
     //Return response
     return ret_response;

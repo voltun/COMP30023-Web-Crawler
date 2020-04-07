@@ -24,7 +24,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(input_url, '\0', sizeof(input_url));
+    memset(input_url, 0, MAX_URL_LEN*sizeof(char));
 
     request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
@@ -32,7 +32,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(request_head, '\0', sizeof(request_head));
+    memset(request_head, 0, MAX_REQUEST_LEN*sizeof(char));
 
     raw_response = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
     if (!raw_response)
@@ -40,7 +40,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(raw_response, '\0', sizeof(raw_response));
+    memset(raw_response, 0, MAX_BUFFER_LEN*sizeof(char));
 
     //Take input url from command line argument
     if (argc <= 1)
