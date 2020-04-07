@@ -12,8 +12,8 @@ char* connect_to(char* url, char* request, int max_response_len)
 {
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
-    char buffer[MAX_BUFFER_LEN] = {0};
-    char *ret_response = NULL;
+    char* buffer = NULL;
+    char* ret_response = NULL;
 
     //Init char arrays
     buffer = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));

@@ -13,9 +13,9 @@
 
 int main(int argc, char const *argv[])
 {
-    char input_url[MAX_URL_LEN] = {0};
-    char request_head[MAX_REQUEST_LEN] = {0};
-    char raw_response[MAX_BUFFER_LEN] = {0};
+    char* input_url = NULL;
+    char* request_head = NULL;
+    char* raw_response = NULL;
 
     //Init vars
     input_url = (char *)malloc(MAX_URL_LEN*sizeof(char));
@@ -51,7 +51,7 @@ int main(int argc, char const *argv[])
     else
     {
         strncpy(input_url, argv[CLI_INDEX_URL],
-        sizeof(argv[CLI_INDEX_URL]));
+        strlen(argv[CLI_INDEX_URL]));
     }
 
     //Create request header
