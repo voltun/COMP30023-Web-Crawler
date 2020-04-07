@@ -10,7 +10,7 @@ make: $(EXE)
 _DEPS = client.h parser.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-%.o: $(patsubst $(SDIR)/%.c) $(DEPS)
+%.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(EXE): $(OBJ)
