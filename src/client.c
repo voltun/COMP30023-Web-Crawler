@@ -1,18 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+#include <netdb.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
 
 #define PORT 8080
 #define MAX_BUFFER_LEN 1024
+#define MAX_IPV4_LEN 15
+
+void hostname_to_ip(char* hostname, char* ip);
 
 char* connect_to(char* url, char* request, int max_response_len)
 {
     int sock = 0, valread;
     struct sockaddr_in serv_addr;
     char* buffer = NULL;
+    char ipv4_addr[INET_ADDRSTRLEN];
     char* ret_response = NULL;
 
     //Init char arrays
@@ -42,8 +47,10 @@ char* connect_to(char* url, char* request, int max_response_len)
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
 
+    hostname_to_ip(url, ipv4_addr);
+
     //Convert url to IPv4
-    if (inet_pton(AF_INET, url, &serv_addr.sin_addr) <= 0)
+    if (inet_pton(AF_INET, ipv4_addr, &serv_addr.sin_addr) <= 0)
     {
         printf("\nInvalid URL address!\n");
         exit(EXIT_FAILURE);
@@ -75,4 +82,35 @@ char* connect_to(char* url, char* request, int max_response_len)
 
     //Return response
     return ret_response;
+}
+
+
+/*
+Resolves host domain name to IPv4 address
+*/
+void hostname_to_ip(char* hostname, char* ip)
+{
+    struct addrinfo addr, *result, *p;
+    struct in_addr **addr;
+    int n;
+
+    memset(&addr, 0, sizeof(struct addrinfo));
+
+    addr.ai_family = AF_UNSPEC;
+    addr.ai_socktype = SOCK_STREAM;
+    
+    if ((n = getaddrinfo(NULL, url, &addr, &result)) != 0)
+    {
+        printf("\nHostname not found!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    for (p = res; p != NULL; p = p->ai_next)
+    {
+        void *addr;
+        if (p->ai_family == AF_INET)
+        {
+            strcpy(ip, )
+        }
+    }
 }
