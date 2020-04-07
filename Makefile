@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -std=gnu99
-OBJ = crawler.o client.o parser.o
+OBJ = object/crawler.o object/client.o object/parser.o
 EXE = crawler
 
 $(EXE): $(OBJ)
