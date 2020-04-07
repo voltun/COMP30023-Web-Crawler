@@ -38,6 +38,7 @@ int main(int argc, char const *argv[])
         strcpy(input_url, argv[CLI_INDEX_URL]);
     }
 
+    //Crawl first URL
     url_list = crawl_to(input_url);
     
     for (int i=0; url_list[i][0] != '\0'; i++)
