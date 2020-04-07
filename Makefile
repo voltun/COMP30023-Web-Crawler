@@ -7,14 +7,14 @@ EXE = crawler
 
 make: $(EXE)
 
+$(EXE): $(OBJ)
+	$(CC) -o $@ $^ $(CFLAGS)
+
 _DEPS = client.h parser.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
 %.o: $(SDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
-
-$(EXE): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
 
 clean:
 	/bin/rm $(OBJ)
