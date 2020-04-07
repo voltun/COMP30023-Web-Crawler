@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "../include/client.h"
 #include "../include/parser.h"
 
@@ -12,12 +13,12 @@
 
 int main(int argc, char const *argv[])
 {
-    char input_url[URL_MAX_LEN] = {0};
+    char input_url[MAX_URL_LEN] = {0};
     char request_head[MAX_REQUEST_LEN] = {0};
     char raw_response[MAX_BUFFER_LEN] = {0};
 
     //Init vars
-    input_url = malloc(MAX_URL_LEN*sizeof(char));
+    input_url = (char *)malloc(MAX_URL_LEN*sizeof(char));
     if (!input_url)
     {
         printf("\nmalloc() failed!\n");
@@ -25,7 +26,7 @@ int main(int argc, char const *argv[])
     }
     memset(input_url, '\0', sizeof(input_url));
 
-    request_head = malloc(MAX_REQUEST_LEN*sizeof(char));
+    request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
     {
         printf("\nmalloc() failed!\n");
@@ -33,7 +34,7 @@ int main(int argc, char const *argv[])
     }
     memset(request_head, '\0', sizeof(request_head));
 
-    raw_response = malloc(MAX_BUFFER_LEN*sizeof(char));
+    raw_response = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
     if (!raw_response)
     {
         printf("\nmalloc() failed!\n");
@@ -57,7 +58,7 @@ int main(int argc, char const *argv[])
     strncpy(request_head, REQUEST_GET, MAX_REQUEST_LEN - 
     strlen(request_head));
 
-    strncpy(request_head, strncpy("Host: ", input_url), MAX_REQUEST_LEN
+    strncpy(request_head, strcpy("Host: ", input_url), MAX_REQUEST_LEN
     - strlen(request_head));
 
     strncpy(request_head, REQUEST_USERAGENT, MAX_REQUEST_LEN -
