@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-Wall -Wextra -std=gnu99 -I
+CFLAGS=-Wall -Wextra -std=gnu99
 IDIR = include
 SDIR = src
 OBJ = crawler.o client.o parser.o
