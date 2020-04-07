@@ -9,6 +9,7 @@
 #define MAX_BUFFER_LEN 100000
 #define CLI_INDEX_URL 1
 #define REQUEST_GET "GET HTTP/1.1\r\n"
+#define REQUEST_HOST_TEMP "Host: "
 #define REQUEST_USERAGENT "User-Agent: chungw4\r\n"
 
 int main(int argc, char const *argv[])
@@ -16,8 +17,7 @@ int main(int argc, char const *argv[])
     char* input_url = NULL;
     char* request_head = NULL;
     char* raw_response = NULL;
-
-    printf("check 0");
+    char* host = NULL;
 
     //Init vars
     input_url = (char *)malloc(MAX_URL_LEN*sizeof(char));
@@ -26,9 +26,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(input_url, 0, sizeof(input_url));
-
-    printf("check 1");
+    memset(input_url, 0, MAX_URL_LEN*sizeof(char));
 
     request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
@@ -38,40 +36,41 @@ int main(int argc, char const *argv[])
     }
     memset(request_head, 0, MAX_REQUEST_LEN*sizeof(char));
 
-    raw_response = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
-    if (!raw_response)
+    host = (char *)malloc(strlen(REQUEST_HOST_TEMP)*sizeof(char));
+    if (!host)
     {
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(raw_response, 0, MAX_BUFFER_LEN*sizeof(char));
+    memset(host, 0, strlen(REQUEST_HOST_TEMP)*sizeof(char));
+    strcpy(host, REQUEST_HOST_TEMP);
 
     //Take input url from command line argument
-    if (argc <= 1)
+    if (argc == 1)
     {
         printf("No URL provided as input!\n");
         return -1;
     }
     else
     {
-        strncpy(input_url, argv[CLI_INDEX_URL],
-        strlen(argv[CLI_INDEX_URL]));
+        strcpy(input_url, argv[CLI_INDEX_URL]);
     }
 
     //Create request header
-    strncpy(request_head, REQUEST_GET, MAX_REQUEST_LEN - 
-    strlen(request_head));
+    strcat(request_head, REQUEST_GET);
 
-    strncpy(request_head, strcpy("Host: ", input_url), MAX_REQUEST_LEN
-    - strlen(request_head));
+    host = (char *)realloc(host, strlen(REQUEST_HOST_TEMP) + 
+    strlen(input_url) + strlen("\r\n"));
+    strcat(host, input_url);
+    strcat(host, "\r\n");
+    strcat(request_head, host);
 
-    strncpy(request_head, REQUEST_USERAGENT, MAX_REQUEST_LEN -
-    strlen(request_head));
+    strcat(request_head, REQUEST_USERAGENT);
 
-    printf("%s\n", request_head);
+    strcat(request_head, "\r\n\r\n");
 
     //Connect to url via socket
-    
+    raw_response = connect_to(input_url, request_head, MAX_BUFFER_LEN);
 
     //Store url response
 
@@ -87,6 +86,9 @@ int main(int argc, char const *argv[])
 
     //Garbage collection
     free(input_url);
+    free(host);
+    free(request_head);
+    free(raw_response);
 
     return 0;
 }
