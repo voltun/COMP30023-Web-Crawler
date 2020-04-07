@@ -16,19 +16,19 @@ char* connect_to(char* url, char* request, int max_response_len)
     char *ret_response = NULL;
 
     //Init char arrays
-    buffer = malloc(MAX_BUFFER_LEN*sizeof(char));
+    buffer = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
     if (!buffer)
     {
         printf("\nmalloc() failed!\n");
-        return(-1);
+        exit(EXIT_FAILURE);
     }
     memset(buffer, 0, sizeof(buffer));
 
-    serv_addr = (sockaddr_in*)malloc(sizeof(sockaddr_in));
+    serv_addr = (struct sockaddr_in*)malloc(sizeof(sockaddr_in));
     if (!serv_addr)
     {
         printf("\nmalloc() failed!\n");
-        return(-1);
+        exit(EXIT_FAILURE);
     }
     memset(&serv_addr, 0, sizeof(serv_addr));
 
@@ -36,7 +36,7 @@ char* connect_to(char* url, char* request, int max_response_len)
     if (!ret_response)
     {
         printf("\nmalloc() failed!\n");
-        return(-1);
+        exit(EXIT_FAILURE);
     }
     memset(ret_response, 0, sizeof(ret_response));
 
@@ -44,7 +44,7 @@ char* connect_to(char* url, char* request, int max_response_len)
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
     {
         printf("\nSocket creation error!\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
 
     serv_addr.sin_family = AF_INET;
@@ -54,7 +54,7 @@ char* connect_to(char* url, char* request, int max_response_len)
     if (inet_pton(AF_INET, url, &serv_addr.sin_addr) <= 0)
     {
         printf("\nInvalid URL address!\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
 
     //Open connection
@@ -62,7 +62,7 @@ char* connect_to(char* url, char* request, int max_response_len)
     sizeof(serv_addr)) < 0)
     {
         printf("\nConnection Failed!\n");
-        return -1;
+        exit(EXIT_FAILURE);
     }
 
     //Send request
@@ -80,7 +80,7 @@ char* connect_to(char* url, char* request, int max_response_len)
 
     //Garbage collection
     free(buffer);
-    free(serv_addr);
+    free(*serv_addr);
 
     //Return response
     return ret_response;
