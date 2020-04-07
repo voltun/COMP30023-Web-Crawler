@@ -72,7 +72,6 @@ char* connect_to(char* url, char* request, int max_response_len)
 
     //Garbage collection
     free(buffer);
-    free(&serv_addr);
 
     //Return response
     return ret_response;
