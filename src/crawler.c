@@ -16,7 +16,7 @@ int main(int argc, char const *argv[])
 {
     char* input_url = NULL;
     char* request_head = NULL;
-    char* raw_response = NULL;
+    char raw_response[MAX_BUFFER_LEN];
     char* host = NULL;
 
     //Init vars
@@ -26,7 +26,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(input_url, 0, MAX_URL_LEN*sizeof(char));
+    memset(input_url, 0, MAX_URL_LEN);
 
     request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(request_head, 0, MAX_REQUEST_LEN*sizeof(char));
+    memset(request_head, 0, MAX_REQUEST_LEN);
 
     host = (char *)malloc(strlen(REQUEST_HOST_TEMP)*sizeof(char));
     if (!host)
@@ -42,7 +42,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(host, 0, strlen(REQUEST_HOST_TEMP)*sizeof(char));
+    memset(host, 0, strlen(REQUEST_HOST_TEMP));
     strcpy(host, REQUEST_HOST_TEMP);
 
     //Take input url from command line argument
@@ -70,10 +70,10 @@ int main(int argc, char const *argv[])
     strcat(request_head, "\r\n\r\n");
 
     //Connect to url via socket
-    raw_response = connect_to(input_url, request_head, MAX_BUFFER_LEN);
+    connect_to(input_url, request_head, raw_response, MAX_BUFFER_LEN);
 
     //Store url response
-
+    printf("%s\n", raw_response);
 
     //Parse html response
 
@@ -88,7 +88,6 @@ int main(int argc, char const *argv[])
     free(input_url);
     free(host);
     free(request_head);
-    free(raw_response);
 
     return 0;
 }

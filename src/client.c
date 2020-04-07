@@ -1,116 +1,86 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+#include <sys/types.h>
 #include <netdb.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
+#include <strings.h>
 
 #define PORT 8080
 #define MAX_BUFFER_LEN 1024
-#define MAX_IPV4_LEN 15
 
-void hostname_to_ip(char* hostname, char* ip);
-
-char* connect_to(char* url, char* request, int max_response_len)
+int connect_to(char* url, char* request, char* raw_response, int max_response_len)
 {
-    int sock = 0, valread;
+    int sock = 0, valread, n;
+    struct hostent *server = NULL;
     struct sockaddr_in serv_addr;
-    char* buffer = NULL;
-    char ipv4_addr[INET_ADDRSTRLEN];
-    char* ret_response = NULL;
+    char buffer[MAX_BUFFER_LEN];
 
     //Init char arrays
-    buffer = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
-    if (!buffer)
-    {
-        printf("\nmalloc() failed!\n");
-        exit(EXIT_FAILURE);
-    }
-    memset(buffer, 0, MAX_BUFFER_LEN*sizeof(char));
+    bzero(buffer, MAX_BUFFER_LEN);
 
-    ret_response = malloc(max_response_len*sizeof(char));
-    if (!ret_response)
-    {
-        printf("\nmalloc() failed!\n");
-        exit(EXIT_FAILURE);
-    }
-    memset(ret_response, 0, max_response_len*sizeof(char));
+    bzero(raw_response, max_response_len);
 
-    //Create socket
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
+    //Resolve hostname
+    server = gethostbyname(url);
+
+    if(server == NULL)
     {
-        printf("\nSocket creation error!\n");
+        printf("Server not found!\n");
         exit(EXIT_FAILURE);
     }
+
+    //Prepare socket
+    bzero((char *)&serv_addr, sizeof(serv_addr));
 
     serv_addr.sin_family = AF_INET;
+
+    bcopy(server->h_addr_list[0], (char *)&serv_addr.sin_addr.s_addr,
+     server->h_length);
+
     serv_addr.sin_port = htons(PORT);
 
-    hostname_to_ip(url, ipv4_addr);
-
-    //Convert url to IPv4
-    if (inet_pton(AF_INET, ipv4_addr, &serv_addr.sin_addr) <= 0)
+    //Create socket
+    sock = socket(AF_INET, SOCK_STREAM, 0);
+    if (sock < 0) 
     {
-        printf("\nInvalid URL address!\n");
+        printf("Failed to open socket!\n");
         exit(EXIT_FAILURE);
     }
 
-    //Open connection
-    if (connect(sock, (struct sockaddr *)&serv_addr, 
-    sizeof(serv_addr)) < 0)
+    //Connect
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-        printf("\nConnection Failed!\n");
+        printf("Connection failed!\n");
         exit(EXIT_FAILURE);
     }
 
-    //Send request
-    send(sock, request, strlen(request), 0);
+    //Write to socket
+    n = write(sock, request, strlen(request));
+    if (n < 0)
+    {
+        printf("Failed to write to socket!\n");
+        exit(EXIT_FAILURE);
+    }
 
+    printf("hi 2");
     //Read response
     while((valread = read(sock, buffer, sizeof(buffer) - 1)) > 0)
      {
-         if (((int)(strlen(buffer) + strlen(ret_response))) < max_response_len)
+         if (((int)(strlen(buffer) + strlen(raw_response))) < max_response_len)
          {
-             strcat(ret_response, buffer);
+             strcat(raw_response, buffer);
+         }
+         else
+         {
+             break;
          }
      }
 
 
     //Garbage collection
-    free(buffer);
 
-    //Return response
-    return ret_response;
-}
-
-
-/*
-Resolves host domain name to IPv4 address
-*/
-void hostname_to_ip(char* hostname, char* ip)
-{
-    struct addrinfo addr, *result, *p;
-    struct in_addr **addr;
-    int n;
-
-    memset(&addr, 0, sizeof(struct addrinfo));
-
-    addr.ai_family = AF_UNSPEC;
-    addr.ai_socktype = SOCK_STREAM;
-    
-    if ((n = getaddrinfo(NULL, url, &addr, &result)) != 0)
-    {
-        printf("\nHostname not found!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    for (p = res; p != NULL; p = p->ai_next)
-    {
-        void *addr;
-        if (p->ai_family == AF_INET)
-        {
-            strcpy(ip, )
-        }
-    }
+    return 0;
 }
