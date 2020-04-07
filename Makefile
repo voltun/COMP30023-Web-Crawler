@@ -8,7 +8,7 @@ all: $(EXE)
 $(EXE): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
-crawler.o: ../src/crawler.c
+crawler.o: crawler.c
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 client.o: ../src/client.c ../include/client.h
