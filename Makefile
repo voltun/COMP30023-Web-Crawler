@@ -7,13 +7,13 @@ $(EXE): $(OBJ)
 	$(CC) -o $(EXE) $(OBJ) $(CFLAGS)
 
 object/crawler.o: src/crawler.c
-	$(CC) -c -o $@ $< src/crawler.c $(CFLAGS)
+	$(CC) -c -o $@ $(CFLAGS)
 
 object/client.o: src/client.c include/client.h
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $(CFLAGS)
 
 object/parser.o: src/parser.c include/parser.h
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $(CFLAGS)
 
 clean:
 	/bin/rm $(OBJ)
