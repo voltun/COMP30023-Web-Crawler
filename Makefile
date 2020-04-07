@@ -1,12 +1,14 @@
 CC=gcc
 CFLAGS=-Wall -Wextra -std=gnu99 -I
-DEPS = include/client.h include/parser.h
-OBJ = src/crawler.o src/client.o src/parser.o
+IDIR = include
+SDIR = src
+DEPS = client.h parser.h
+OBJ = crawler.o client.o parser.o
 EXE = crawler
 
-all: $(EXE)
+make: $(EXE)
 
-%.o: %.c $(DEPS)
+%.o: $(SDIR)/%.c $(IDIR)/$(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(EXE): $(OBJ)
