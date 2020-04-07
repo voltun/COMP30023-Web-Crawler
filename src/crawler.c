@@ -8,9 +8,11 @@
 #define MAX_REQUEST_LEN 1000
 #define MAX_BUFFER_LEN 100000
 #define CLI_INDEX_URL 1
-#define REQUEST_GET "GET HTTP/1.1\r\n"
+#define REQUEST_GET "GET /index.html HTTP/1.1\r\n"
 #define REQUEST_HOST_TEMP "Host: "
 #define REQUEST_USERAGENT "User-Agent: chungw4\r\n"
+#define REQUEST_ACCEPT "Accept: text/html, text/plain\r\n"
+#define REQUEST_CONN "Connection: keep-alive\r\n"
 
 int main(int argc, char const *argv[])
 {
@@ -59,6 +61,7 @@ int main(int argc, char const *argv[])
     //Create request header
     strcat(request_head, REQUEST_GET);
 
+    rem_http(input_url);
     host = (char *)realloc(host, strlen(REQUEST_HOST_TEMP) + 
     strlen(input_url) + strlen("\r\n"));
     strcat(host, input_url);
@@ -66,6 +69,8 @@ int main(int argc, char const *argv[])
     strcat(request_head, host);
 
     strcat(request_head, REQUEST_USERAGENT);
+    
+    strcat(request_head, REQUEST_ACCEPT);
 
     strcat(request_head, "\r\n\r\n");
 
@@ -74,6 +79,7 @@ int main(int argc, char const *argv[])
 
     //Store url response
     printf("%s\n", raw_response);
+    printf("%s\n", input_url);
 
     //Parse html response
 

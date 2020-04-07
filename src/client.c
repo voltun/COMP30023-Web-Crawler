@@ -8,7 +8,7 @@
 #include <string.h>
 #include <strings.h>
 
-#define PORT 8080
+#define PORT 80
 #define MAX_BUFFER_LEN 1024
 
 int connect_to(char* url, char* request, char* raw_response, int max_response_len)
@@ -65,7 +65,6 @@ int connect_to(char* url, char* request, char* raw_response, int max_response_le
         exit(EXIT_FAILURE);
     }
 
-    printf("hi 2");
     //Read response
     while((valread = read(sock, buffer, sizeof(buffer) - 1)) > 0)
      {
