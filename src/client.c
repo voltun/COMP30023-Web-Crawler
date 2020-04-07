@@ -11,7 +11,7 @@
 char* connect_to(char* url, char* request, int max_response_len)
 {
     int sock = 0, valread;
-    struct sockaddr_in* serv_addr;
+    struct sockaddr_in serv_addr;
     char* buffer = NULL;
     char* ret_response = NULL;
 
@@ -23,14 +23,6 @@ char* connect_to(char* url, char* request, int max_response_len)
         exit(EXIT_FAILURE);
     }
     memset(buffer, 0, MAX_BUFFER_LEN*sizeof(char));
-
-    serv_addr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
-    if (!&serv_addr)
-    {
-        printf("\nmalloc() failed!\n");
-        exit(EXIT_FAILURE);
-    }
-    memset(&serv_addr, 0, sizeof(serv_addr));
 
     ret_response = malloc(max_response_len*sizeof(char));
     if (!ret_response)
@@ -80,7 +72,7 @@ char* connect_to(char* url, char* request, int max_response_len)
 
     //Garbage collection
     free(buffer);
-    free(&serv_addr);
+    free(serv_addr);
 
     //Return response
     return ret_response;
