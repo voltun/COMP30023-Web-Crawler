@@ -11,7 +11,7 @@
 char* connect_to(char* url, char* request, int max_response_len)
 {
     int sock = 0, valread;
-    struct sockaddr_in serv_addr;
+    struct sockaddr_in* serv_addr;
     char* buffer = NULL;
     char* ret_response = NULL;
 
@@ -22,7 +22,7 @@ char* connect_to(char* url, char* request, int max_response_len)
         printf("\nmalloc() failed!\n");
         exit(EXIT_FAILURE);
     }
-    memset(buffer, 0, sizeof(buffer));
+    memset(buffer, 0, MAX_BUFFER_LEN*sizeof(char));
 
     serv_addr = (struct sockaddr_in*)malloc(sizeof(struct sockaddr_in));
     if (!&serv_addr)
@@ -38,7 +38,7 @@ char* connect_to(char* url, char* request, int max_response_len)
         printf("\nmalloc() failed!\n");
         exit(EXIT_FAILURE);
     }
-    memset(ret_response, 0, sizeof(ret_response));
+    memset(ret_response, 0, max_response_len*sizeof(char));
 
     //Create socket
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
@@ -71,7 +71,7 @@ char* connect_to(char* url, char* request, int max_response_len)
     //Read response
     while((valread = read(sock, buffer, sizeof(buffer) - 1)) > 0)
      {
-         if (strlen(buffer) + strlen(ret_response) < max_response_len)
+         if (((int)(strlen(buffer) + strlen(ret_response))) < max_response_len)
          {
              strcat(ret_response, buffer);
          }
