@@ -3,8 +3,6 @@ CFLAGS=-Wall -Wextra -std=gnu99
 OBJ = crawler.o client.o parser.o
 EXE = crawler
 
-all: $(EXE)
-
 $(EXE): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS)
 
