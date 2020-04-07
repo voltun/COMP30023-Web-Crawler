@@ -6,13 +6,13 @@ EXE = crawler
 $(EXE): $(OBJ)
 	$(CC) -o $(EXE) $(OBJ) $(CFLAGS)
 
-crawler.o: src/crawler.c
+object/crawler.o: src/crawler.c
 	$(CC) -c $@ $< src/crawler.c $(CFLAGS)
 
-client.o: src/client.c include/client.h
+object/client.o: src/client.c include/client.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-parser.o: src/parser.c include/parser.h
+object/parser.o: src/parser.c include/parser.h
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 clean:
