@@ -26,6 +26,8 @@ int main(int argc, char const *argv[])
     }
     memset(input_url, 0, MAX_URL_LEN*sizeof(char));
 
+    printf("check 1");
+
     request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
     {
