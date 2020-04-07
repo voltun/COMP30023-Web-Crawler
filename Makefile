@@ -4,10 +4,10 @@ OBJ = crawler.o client.o parser.o
 EXE = crawler
 
 $(EXE): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS)
+	$(CC) -o $(EXE) $(OBJ) $(CFLAGS)
 
-crawler.o: crawler.c
-	$(CC) -c -o $@ $< $(CFLAGS)
+crawler.o: ../src/crawler.c
+	$(CC) -c $@ $< ../src/crawler.c $(CFLAGS)
 
 client.o: ../src/client.c ../include/client.h
 	$(CC) -c -o $@ $< $(CFLAGS)
