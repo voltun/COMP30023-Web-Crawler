@@ -17,6 +17,8 @@ int main(int argc, char const *argv[])
     char* request_head = NULL;
     char* raw_response = NULL;
 
+    printf("check 0");
+
     //Init vars
     input_url = (char *)malloc(MAX_URL_LEN*sizeof(char));
     if (!input_url)
@@ -24,7 +26,7 @@ int main(int argc, char const *argv[])
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(input_url, 0, MAX_URL_LEN*sizeof(char));
+    memset(input_url, 0, sizeof(input_url));
 
     printf("check 1");
 
