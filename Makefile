@@ -7,7 +7,7 @@ $(EXE): $(OBJ)
 	$(CC) -o $(EXE) $(OBJ) $(CFLAGS)
 
 object/crawler.o: src/crawler.c
-	$(CC) -c $@ $< src/crawler.c $(CFLAGS)
+	$(CC) -c -o $@ $< src/crawler.c $(CFLAGS)
 
 object/client.o: src/client.c include/client.h
 	$(CC) -c -o $@ $< $(CFLAGS)
