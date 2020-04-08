@@ -64,7 +64,7 @@ int main(int argc, char const *argv[])
             {
                 while(ret_url[n][0] != '\0')
                 {
-                    printf("returned url: %s\n", ret_url[n]);
+                    // printf("returned url: %s\n", ret_url[n]);
                     visited(visited_url, ret_url[n], MAX_URL_NUM);                   
                     n++;
                 }
@@ -79,10 +79,10 @@ int main(int argc, char const *argv[])
         input_url = visited_url[count];
     } while(1);
 
-    for (int i=0; visited_url[i][0] != '\0'; i++)
-    {
-        printf("visited: %s\n", visited_url[i]);
-    }
+    // for (int i=0; visited_url[i][0] != '\0'; i++)
+    // {
+    //     printf("visited: %s\n", visited_url[i]);
+    // }
 
     //Garbage collection
     free_2d_char(visited_url, MAX_URL_NUM);
@@ -126,7 +126,7 @@ char** crawl_to(char* url)
     create_request_header(request_head, domain_name, url);
     //Connect to url via socket and store response
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
-    printf("\n%s\n", raw_response);
+    // printf("\n%s\n", raw_response);
     free(request_head);
 
     if (raw_response[0] == '\0')

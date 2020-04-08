@@ -237,7 +237,7 @@ int visited(char** list, char* url, int max_url_num)
     regex_t regex;
     int status;
 
-    check = regcomp(&regex, url, REG_EXTENDED);
+    regcomp(&regex, url, REG_EXTENDED);
     for (int i = 0; i < max_url_num; i++)
     {
         if (list[i][0] != '\0')
