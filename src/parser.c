@@ -15,6 +15,7 @@
 int get_full_url(char* url, char* hostname, char* text);
 int parse_valid_url(char**);
 int rem_trail_slash(char*);
+int rem_precede_slash(char*);
 void rem_whitespace(char*);
 
 /*
@@ -185,28 +186,36 @@ int get_full_url(char* url, char* hostname, char* text)
     {
         //Make a deep copy of hostname
         hostcopy = malloc((strlen(hostname) + strlen(url) + 1)*sizeof(char));
-        strcpy(hostcopy, hostname);
-        rem_trail_slash(hostcopy);
-        //Remove last component of url for appending relative url
-        for (int i=strlen(hostcopy)-1;i>=0;i--)
+        //Check implied protocol
+        if (url[0] == '/' && url[1] == '/')
         {
-            if (hostcopy[i] != '/')
-            {
-                hostcopy[i] = '\0';
-            }
-            else
-            {
-                break;
-            }
+            rem_precede_slash(url);
+            strcat(hostcopy, REGEX_HTTP);
         }
-        //Checks if url is of form /b.html
-        if (url[0] == '/')
+        else
         {
-            hostcopy[strlen(hostcopy)-1] = '\0';
+            strcpy(hostcopy, hostname);
+            rem_trail_slash(hostcopy);
+            //Remove last component of url for appending relative url
+            for (int i=strlen(hostcopy)-1;i>=0;i--)
+            {
+                if (hostcopy[i] != '/')
+                {
+                    hostcopy[i] = '\0';
+                }
+                else
+                {
+                    break;
+                }
+            }
+            //Checks if url is of form /b.html
+            if (url[0] == '/')
+            {
+                rem_trail_slash(hostcopy);
+            }
         }
 
         strcat(hostcopy, url);
-
         url = hostcopy;
     }
     rem_trail_slash(url);
@@ -285,6 +294,15 @@ int visited(char** list, char* url, int max_url_num)
         break;
     }
     regfree(&regex);
+    return 0;
+}
+
+int rem_precede_slash(char* text)
+{
+    while(text[0] == '/')
+    {
+        text++;
+    }
     return 0;
 }
 
