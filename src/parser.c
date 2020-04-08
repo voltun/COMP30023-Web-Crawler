@@ -78,6 +78,7 @@ Removes http:// from given text
 int rem_http(char* text)
 {
     regex_t regex;
+    char* a = NULL;
     int check, status;
 
     check = regcomp(&regex, REGEX_HTTP, REG_EXTENDED);
@@ -90,7 +91,10 @@ int rem_http(char* text)
     
     if(!status)
     {
-        strcpy(text, text + HTTP_STRLEN);
+        a = malloc(strlen(text)*sizeof(char));
+        bzero(a, strlen(text));
+        strcpy(a, text+HTTP_STRLEN);
+        strcpy(text, a);
     }
 
     regfree(&regex);

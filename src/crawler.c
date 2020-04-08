@@ -89,8 +89,9 @@ int main(int argc, char const *argv[])
 
     //Garbage collection
     free_2d_char(visited_url, MAX_URL_NUM);
+    free(input_url);
 
-    exit(0);
+    return 0;
 }
 
 /*
@@ -103,9 +104,17 @@ char** crawl_to(char* url)
     char* domain_name = NULL;
     char* url_copy = NULL;
     char* request_head = NULL;
-    char raw_response[MAX_BUFFER_LEN];
+    char* raw_response = NULL;
 
     //init vars
+    raw_response = (char *)malloc(MAX_BUFFER_LEN*sizeof(char));
+    if (!raw_response)
+    {
+        printf("\nmalloc() failed!\n");
+        exit(EXIT_FAILURE);
+    }
+    memset(raw_response, 0, MAX_BUFFER_LEN);
+
     request_head = (char *)malloc(MAX_REQUEST_LEN*sizeof(char));
     if (!request_head)
     {
@@ -123,14 +132,14 @@ char** crawl_to(char* url)
     strcpy(url_copy, url);
 
     printf("%s\n", url);
+
     //Create request header
     rem_http(url);
     domain_name = split_hostname(url);
     create_request_header(request_head, domain_name, url);
-    printf("REQUEST: %s\n", request_head);
-    //Connect to url via socket and store response
+
+    //Connect to url via socket and store response in request_head
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
-    printf("\n%s\n", raw_response);
     free(request_head);
 
     if (raw_response[0] == '\0')
@@ -142,6 +151,9 @@ char** crawl_to(char* url)
 
 }
 
+/*
+ *Frees a 2D char array, duh
+ */
 void free_2d_char(char** thing, int len)
 {
     for (int i=0; i < len; i++)

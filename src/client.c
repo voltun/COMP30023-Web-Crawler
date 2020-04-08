@@ -113,7 +113,7 @@ int create_request_header(char* request_head, char* hostname, char* uri)
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(host, 0, strlen(REQUEST_HOST_TEMP));
+    memset(host, 0, strlen(REQUEST_HOST_TEMP)+strlen(hostname)+strlen("\r\n"));
 
     get = malloc((strlen(REQUEST_GET)+strlen(uri)+strlen(
         REQUEST_GET_HTTP))*sizeof(char));
