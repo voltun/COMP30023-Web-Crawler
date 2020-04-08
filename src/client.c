@@ -10,6 +10,9 @@
 
 #define PORT 80
 #define MAX_BUFFER_LEN 1024
+#define MAX_STATUS_CODE_LEN 3
+#define STATUS_200 "200"
+#define HTTP_LEN "HTTP/1.1 "
 #define REQUEST_GET "GET " 
 #define REQUEST_GET_HTTP " HTTP/1.1\r\n"
 #define REQUEST_HOST_TEMP "Host: "
@@ -20,6 +23,7 @@
 int connect_to(char* url, char* request, char* raw_response, int max_response_len)
 {
     int sock = 0, valread, n;
+    char statuscode[MAX_STATUS_CODE_LEN];
     struct hostent *server = NULL;
     char response_header[MAX_BUFFER_LEN];
     struct sockaddr_in serv_addr;
@@ -29,6 +33,7 @@ int connect_to(char* url, char* request, char* raw_response, int max_response_le
     bzero(buffer, MAX_BUFFER_LEN);
     bzero(response_header, MAX_BUFFER_LEN);
     bzero(raw_response, max_response_len);
+    bzero(statuscode, MAX_STATUS_CODE_LEN);
 
     //Resolve hostname
     server = gethostbyname(url);
@@ -36,7 +41,8 @@ int connect_to(char* url, char* request, char* raw_response, int max_response_le
     if(server == NULL)
     {
         printf("Server not found!\n");
-        exit(EXIT_FAILURE);
+        raw_response = NULL;
+        return 0;
     }
 
     //Prepare socket
@@ -79,6 +85,17 @@ int connect_to(char* url, char* request, char* raw_response, int max_response_le
     {
         printf("Error reading from socket!\n");
         exit(EXIT_FAILURE);
+    }
+
+    for (int j = 0; j < 3; j++)
+    {
+        statuscode[j] = raw_response[strlen(HTTP_LEN) + j];
+    }
+
+    //Bad status code
+    if (strcmp(statuscode, STATUS_200) != 0)
+    {
+        raw_response = NULL;
     }
 
     return 0;
@@ -126,8 +143,6 @@ int create_request_header(char* request_head, char* hostname, char* uri)
 
     free(host);
     free(get);
-
-    printf("%s\n\n",request_head);
 
     return 0;
 }
