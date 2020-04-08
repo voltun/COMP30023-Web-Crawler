@@ -186,7 +186,7 @@ int get_full_url(char* url, char* hostname, char* text)
         //Check implied protocol
         if (url[0] == '/' && url[1] == '/')
         {
-            strcat(hostcopy, "HTTP:");
+            strcat(hostcopy, "http:");
         }
         else
         {
