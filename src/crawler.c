@@ -61,7 +61,7 @@ int main(int argc, char const *argv[])
         }
         int n = 0;
         char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
-        bzero(url_copy, MAX_URL_LEN);
+        bzero(urlcopy, MAX_URL_LEN);
 
         strcpy(urlcopy, input_url);
         ret_url = crawl_to(urlcopy);
