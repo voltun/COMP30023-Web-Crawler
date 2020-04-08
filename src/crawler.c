@@ -79,15 +79,15 @@ int main(int argc, char const *argv[])
         input_url = visited_url[count];
     } while(1);
 
-    // for (int i=0; visited_url[i][0] != '\0'; i++)
-    // {
-    //     printf("visited: %s\n", visited_url[i]);
-    // }
+    for (int i=0; visited_url[i][0] != '\0'; i++)
+    {
+        printf("visited: %s\n", visited_url[i]);
+    }
 
     //Garbage collection
     free_2d_char(visited_url, MAX_URL_NUM);
 
-    return 0;
+    exit(0);
 }
 
 /*
