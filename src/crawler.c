@@ -61,6 +61,7 @@ int main(int argc, char const *argv[])
         }
         int n = 0;
         char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
+        bzero(url_copy, MAX_URL_LEN);
 
         strcpy(urlcopy, input_url);
         ret_url = crawl_to(urlcopy);
@@ -68,7 +69,7 @@ int main(int argc, char const *argv[])
         {
             while(ret_url[n][0] != '\0')
             {
-                // printf("returned url: %s\n", ret_url[n]);
+                printf("returned url: %s\n", ret_url[n]);
                 visited(visited_url, ret_url[n], MAX_URL_NUM);                   
                 n++;
             }

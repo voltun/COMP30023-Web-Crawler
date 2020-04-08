@@ -202,7 +202,7 @@ int get_full_url(char* url, char* hostname, char* text)
                 printf("malloc() failed!\n");
                 exit(EXIT_FAILURE);
             }
-            memset(hostcopy, 0, strlen("http:")+strlen(url)+1);
+            memset(hostcopy, 0, strlen(hostname)+strlen(url)+1);
             strcpy(hostcopy, hostname);
             rem_trail_slash(hostcopy);
             //Remove last component of url for appending relative url
