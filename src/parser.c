@@ -225,7 +225,7 @@ int get_full_url(char* url, char* hostname, char* text)
         }
 
         strcat(hostcopy, url);
-        url = hostcopy;
+        strcpy(url, hostcopy);
         url[strlen(url)-1] = '\0';
     }
     else
