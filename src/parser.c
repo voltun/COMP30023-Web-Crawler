@@ -181,15 +181,16 @@ int get_full_url(char* url, char* hostname, char* text)
     }
     else if (status == REG_NOMATCH)
     {
-        //Make a deep copy of hostname
-        hostcopy = malloc((strlen(hostname) + strlen(url) + 1)*sizeof(char));
         //Check implied protocol
         if (url[0] == '/' && url[1] == '/')
         {
+            hostcopy = malloc((strlen("http:")+strlen(url)+1)*sizeof(char));
             strcat(hostcopy, "http:");
         }
         else
         {
+            //Make a deep copy of hostname
+            hostcopy = malloc((strlen(hostname) + strlen(url) + 1)*sizeof(char));
             strcpy(hostcopy, hostname);
             rem_trail_slash(hostcopy);
             //Remove last component of url for appending relative url
@@ -213,6 +214,7 @@ int get_full_url(char* url, char* hostname, char* text)
 
         strcat(hostcopy, url);
         url = hostcopy;
+        url[strlen(url)-1] = '\0';
     }
     else
     {
