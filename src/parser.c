@@ -4,6 +4,7 @@
 #include <strings.h>
 #include <sys/types.h>
 #include <regex.h>
+#include <ctype.h>
 
 #define HTTP_STRLEN 7
 #define MAX_URL_LEN 1000
@@ -49,6 +50,13 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     body = body + 4;
 
     rem_whitespace(body);
+    for (int i=0; body[i] != '\0'; i++)
+    {
+        if (isalpha(body[i]))
+        {
+            body[i] = tolower(body[i]);
+        }
+    }
 
     // while(body+strlen(ANCHOR_START) != NULL)
     // {
@@ -134,6 +142,7 @@ void rem_whitespace(char* text)
     {
         while(*temp == ' ')
         {
+            if(*temp)
             ++temp;
         }
     }
