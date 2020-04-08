@@ -126,7 +126,7 @@ char** crawl_to(char* url)
     create_request_header(request_head, domain_name, url);
     //Connect to url via socket and store response
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
-    // printf("\n%s\n", raw_response);
+    printf("\n%s\n", raw_response);
     free(request_head);
 
     if (raw_response[0] == '\0')
