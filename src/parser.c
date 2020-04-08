@@ -185,12 +185,24 @@ int get_full_url(char* url, char* hostname, char* text)
         if (url[0] == '/' && url[1] == '/')
         {
             hostcopy = malloc((strlen("http:")+strlen(url)+1)*sizeof(char));
+            if (!hostcopy)
+            {
+                printf("malloc() failed!\n");
+                exit(EXIT_FAILURE)
+            }
+            memset(hostcopy, 0, strlen("http:")+strlen(url)+1);
             strcat(hostcopy, "http:");
         }
         else
         {
             //Make a deep copy of hostname
             hostcopy = malloc((strlen(hostname) + strlen(url) + 1)*sizeof(char));
+            if (!hostcopy)
+            {
+                printf("malloc() failed!\n");
+                exit(EXIT_FAILURE)
+            }
+            memset(hostcopy, 0, strlen("http:")+strlen(url)+1);
             strcpy(hostcopy, hostname);
             rem_trail_slash(hostcopy);
             //Remove last component of url for appending relative url
