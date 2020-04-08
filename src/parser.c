@@ -213,10 +213,14 @@ int get_full_url(char* url, char* hostname, char* text)
 
         strcat(hostcopy, url);
         url = hostcopy;
-        printf("Regenerated URL: %s\n", url);
+    }
+    else
+    {
+        printf("Bad regex!\n");
+        exit(EXIT_FAILURE);
     }
     rem_trail_slash(url);
-
+    printf("Regenerated URL: %s\n", url);
     return 0;
 }
 

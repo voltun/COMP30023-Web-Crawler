@@ -53,11 +53,15 @@ int main(int argc, char const *argv[])
     do
     {
         count ++;
-        //Check if url visited before
-        // if(!visited(visited_url, input_url, MAX_URL_NUM))
-        // {
+        ret_url = (char**)malloc(MAX_URL_NUM*sizeof(char*));
+        for (int i = 0; i < MAX_URL_NUM; i++)
+        {
+            ret_url[i] = malloc(MAX_URL_LEN*sizeof(char));
+            memset(ret_url[i], 0, MAX_URL_LEN);
+        }
         int n = 0;
         char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
+        
         strcpy(urlcopy, input_url);
         ret_url = crawl_to(urlcopy);
         if (ret_url != NULL)
