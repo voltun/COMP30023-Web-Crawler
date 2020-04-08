@@ -59,11 +59,6 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
         }
     }
 
-    // while(body+strlen(ANCHOR_START) != NULL)
-    // {
-    //     if (n = strcasecmp(b))
-    // }
-
     //Find URL
     while ((body = strstr(body, ANCHOR_START)) != NULL)
     {
@@ -97,6 +92,8 @@ int rem_http(char* text)
     {
         strcpy(text, text + HTTP_STRLEN);
     }
+
+    regfree(&regex);
 
     return 0;
 }
@@ -217,6 +214,7 @@ int get_full_url(char* url, char* hostname, char* text)
 
         strcat(hostcopy, url);
         url = hostcopy;
+        printf("Regenerated URL: %s\n", url);
     }
     rem_trail_slash(url);
 

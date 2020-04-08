@@ -56,21 +56,19 @@ int main(int argc, char const *argv[])
         //Check if url visited before
         // if(!visited(visited_url, input_url, MAX_URL_NUM))
         // {
-            int n = 0;
-            char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
-            strcpy(urlcopy, input_url);
-            ret_url = crawl_to(urlcopy);
-            if (ret_url != NULL)
+        int n = 0;
+        char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
+        strcpy(urlcopy, input_url);
+        ret_url = crawl_to(urlcopy);
+        if (ret_url != NULL)
+        {
+            while(ret_url[n][0] != '\0')
             {
-                while(ret_url[n][0] != '\0')
-                {
-                    // printf("returned url: %s\n", ret_url[n]);
-                    visited(visited_url, ret_url[n], MAX_URL_NUM);                   
-                    n++;
-                }
+                // printf("returned url: %s\n", ret_url[n]);
+                visited(visited_url, ret_url[n], MAX_URL_NUM);                   
+                n++;
             }
-            
-        // }
+        }
         
         if(visited_url[count] == NULL || visited_url[count][0] == '\0')
         {
@@ -124,6 +122,7 @@ char** crawl_to(char* url)
     rem_http(url);
     domain_name = split_hostname(url);
     create_request_header(request_head, domain_name, url);
+    printf("REQUEST: %s\n", request_head);
     //Connect to url via socket and store response
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
     printf("\n%s\n", raw_response);
