@@ -7,13 +7,14 @@
 
 #define HTTP_STRLEN 7
 #define MAX_URL_LEN 1000
-#define ANCHOR_START "<a href=\""
+#define ANCHOR_START "href=\""
 #define REGEX_HTTP "http://"
 #define NON_VALID_URL_REGEX "([.]|[..])/|#|%"
 
 int get_full_url(char* url, char* hostname, char* text);
 int parse_valid_url(char**);
 int rem_trail_slash(char*);
+void rem_whitespace(char*);
 
 /*
 Finds all valid html redirects in the given text
@@ -46,6 +47,13 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     //Remove response header
     body = strstr(text, "\r\n\r\n");
     body = body + 4;
+
+    rem_whitespace(body);
+
+    // while(body+strlen(ANCHOR_START) != NULL)
+    // {
+    //     if (n = strcasecmp(b))
+    // }
 
     //Find URL
     while ((body = strstr(body, ANCHOR_START)) != NULL)
@@ -116,6 +124,20 @@ char* split_hostname(char* url)
     }
     
     return hostname;
+}
+
+void rem_whitespace(char* text)
+{
+    const char* temp = text;
+
+    do
+    {
+        while(*temp == ' ')
+        {
+            ++temp;
+        }
+    }
+    while((*text)++ == *(temp)++);
 }
 
 /*

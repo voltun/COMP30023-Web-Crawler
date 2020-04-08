@@ -40,7 +40,7 @@ int connect_to(char* url, char* request, char* raw_response, int max_response_le
 
     if(server == NULL)
     {
-        printf("Server not found!\n");
+        // printf("Server not found!\n");
         raw_response = NULL;
         return 0;
     }
