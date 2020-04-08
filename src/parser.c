@@ -188,7 +188,7 @@ int get_full_url(char* url, char* hostname, char* text)
             if (!hostcopy)
             {
                 printf("malloc() failed!\n");
-                exit(EXIT_FAILURE)
+                exit(EXIT_FAILURE);
             }
             memset(hostcopy, 0, strlen("http:")+strlen(url)+1);
             strcat(hostcopy, "http:");
@@ -200,7 +200,7 @@ int get_full_url(char* url, char* hostname, char* text)
             if (!hostcopy)
             {
                 printf("malloc() failed!\n");
-                exit(EXIT_FAILURE)
+                exit(EXIT_FAILURE);
             }
             memset(hostcopy, 0, strlen("http:")+strlen(url)+1);
             strcpy(hostcopy, hostname);
