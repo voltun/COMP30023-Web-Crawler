@@ -186,8 +186,7 @@ int get_full_url(char* url, char* hostname, char* text)
         //Check implied protocol
         if (url[0] == '/' && url[1] == '/')
         {
-            rem_precede_slash(url);
-            strcat(hostcopy, REGEX_HTTP);
+            strcat(hostcopy, "HTTP:");
         }
         else
         {
