@@ -18,7 +18,6 @@
 #define REQUEST_HOST_TEMP "Host: "
 #define REQUEST_USERAGENT "User-Agent: chungw4\r\n"
 #define REQUEST_ACCEPT "Accept: text/html, text/plain\r\n"
-#define REQUEST_CONN "Connection: keep-alive\r\n"
 
 int connect_to(char* url, char* request, char* raw_response, int max_response_len)
 {
@@ -125,15 +124,18 @@ int create_request_header(char* request_head, char* hostname, char* uri)
     memset(get, 0, strlen(REQUEST_GET)+strlen(uri)+strlen(
         REQUEST_GET_HTTP)+1);
     
+    //Prepare the GET header field
     strcpy(get, REQUEST_GET);
     strcat(get, uri);
     strcat(get, REQUEST_GET_HTTP);
     strcpy(request_head, get);
 
+    //Prepare Host header field
     strcpy(host, REQUEST_HOST_TEMP);
     strcat(host, hostname);
     strcat(host, "\r\n");
 
+    //Prepare User-Agent and Accept header field
     strcat(request_head, host);
     strcat(request_head, REQUEST_USERAGENT);   
     strcat(request_head, REQUEST_ACCEPT);
