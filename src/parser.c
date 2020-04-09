@@ -144,16 +144,16 @@ char* split_hostname(char* url)
 
 void rem_whitespace(char* text)
 {
-    const char* temp = text;
+    int count = 0;
 
-    do
+    for (int i=0; text[i] != '\0'; i++)
     {
-        while(*temp == ' ')
+        if (text[i] != ' ')
         {
-            ++temp;
+            text[count++] = text[i];
         }
     }
-    while((*text)++ == *(temp)++);
+    text[count] = '\0';
 }
 
 /*
