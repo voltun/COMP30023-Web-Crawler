@@ -51,8 +51,10 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     body = strstr(text, "\r\n\r\n");
     body = body + 4;
 
+    //Remove all whitespace in message body
     rem_whitespace(body);
-    printf("\nAFTER WHITESPACE REM:\n%s\n", body);
+
+    //COnvert all characters in message to lowercase
     for (int i=0; body[i] != '\0'; i++)
     {
         if (isalpha(body[i]))
@@ -61,14 +63,16 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
         }
     }
 
-    //Find URL
+    //Find URL by matching to "href="
     while ((body = strstr(body, ANCHOR_START)) != NULL)
     {
         body = body + strlen(ANCHOR_START);
+        //Regenerate URL into absolute URL if needed
         get_full_url(url_list[count], ori_hostname, body);
         count += 1;
     }
 
+    //Determine URL to be crawled to or not 
     parse_valid_url(url_list);
 
     free(ori_hostname);
@@ -94,10 +98,12 @@ int rem_http(char* text)
     }
     status = regexec(&regex, text, 0, NULL, 0);
     
+    //http:// substring not found
     if(!status)
     {
         a = malloc(strlen(text)*sizeof(char));
         bzero(a, strlen(text));
+        //Append "http://" at the start of url
         strcpy(a, text+HTTP_STRLEN);
         strcpy(text, a);
     }
@@ -121,6 +127,7 @@ char* split_hostname(char* url)
 
     hostname = malloc((strlen(url) + 1)*sizeof(char));
 
+    //Stores the first substring until a '/' is found 
     while ((count < (int)strlen(url)) && url[count] != '/')
     {
         hostname[count] = url[count];
@@ -129,6 +136,7 @@ char* split_hostname(char* url)
 
     hostname[count] = '\0';
     
+    //Check if url has any uri links, or point to root
     if ((strlen(url) - strlen(hostname) > 0))
     {
         strcpy(url, url + count);
@@ -142,6 +150,9 @@ char* split_hostname(char* url)
     return hostname;
 }
 
+/*
+ *Removes all whitespace characters from a given string
+ */
 void rem_whitespace(char* text)
 {
     int count = 0;
@@ -157,8 +168,8 @@ void rem_whitespace(char* text)
 }
 
 /*
-Gets the first full url link from a given string
-If Relative url, appends hostname.
+Gets the first matched url link from a given string
+If URL found is not absolute, will regenerate
 */
 int get_full_url(char* url, char* hostname, char* text)
 {
@@ -242,9 +253,10 @@ int get_full_url(char* url, char* hostname, char* text)
         printf("Bad regex!\n");
         exit(EXIT_FAILURE);
     }
+
     rem_trail_slash(url);
     htm_to_html(url);
-    printf("Regenerated URL: %s\n", url);
+
     return 0;
 }
 
@@ -319,6 +331,7 @@ int visited(char** list, char* url, int max_url_num)
         break;
     }
     regfree(&regex);
+    
     return 0;
 }
 

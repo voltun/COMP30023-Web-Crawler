@@ -53,12 +53,6 @@ int main(int argc, char const *argv[])
     do
     {
         count ++;
-        // ret_url = (char**)malloc(MAX_URL_NUM*sizeof(char*));
-        // for (int i = 0; i < MAX_URL_NUM; i++)
-        // {
-        //     ret_url[i] = malloc(MAX_URL_LEN*sizeof(char));
-        //     memset(ret_url[i], 0, MAX_URL_LEN);
-        // }
         int n = 0;
         char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
         bzero(urlcopy, MAX_URL_LEN);
@@ -69,7 +63,6 @@ int main(int argc, char const *argv[])
         {
             while(ret_url[n][0] != '\0')
             {
-                printf("returned url: %s\n", ret_url[n]);
                 visited(visited_url, ret_url[n], MAX_URL_NUM);                   
                 n++;
             }
@@ -82,11 +75,6 @@ int main(int argc, char const *argv[])
         }
         input_url = visited_url[count];
     } while(1);
-
-    for (int i=0; visited_url[i][0] != '\0'; i++)
-    {
-        printf("visited: %s\n", visited_url[i]);
-    }
 
     //Garbage collection
     free_2d_char(visited_url, MAX_URL_NUM);
@@ -139,12 +127,8 @@ char** crawl_to(char* url)
     domain_name = split_hostname(url);
     create_request_header(request_head, domain_name, url);
 
-    printf("%s\n", request_head);
-
     //Connect to url via socket and store response in request_head
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
-
-    // printf("%s\n", raw_response);
     
     free(request_head);
     free(domain_name);
