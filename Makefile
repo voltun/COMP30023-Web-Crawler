@@ -4,7 +4,7 @@ OBJ = crawler.o client.o parser.o
 EXE = crawler
 
 $(EXE): $(OBJ)
-	$(CC) -ggdb -o $(EXE) $(OBJ) $(CFLAGS) -fsanitize=address -fno-omit-frame-pointer
+	$(CC) -o $(EXE) $(OBJ) $(CFLAGS)
 
 crawler.o: src/crawler.c
 	$(CC) -c -o $@ $< $(CFLAGS)

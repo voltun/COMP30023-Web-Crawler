@@ -107,38 +107,36 @@ int create_request_header(char* request_head, char* hostname, char* uri)
     char* get = NULL;
 
     host = (char *)malloc((strlen(REQUEST_HOST_TEMP) + 
-    strlen(hostname) + strlen("\r\n"))*sizeof(char));
+    strlen(hostname) + strlen("\r\n") + 1)*sizeof(char));
     if (!host)
     {
         printf("\nmalloc() failed!\n");
         return -1;
     }
-    memset(host, 0, strlen(REQUEST_HOST_TEMP)+strlen(hostname)+strlen("\r\n"));
+    memset(host, 0, strlen(REQUEST_HOST_TEMP)+strlen(hostname)+strlen("\r\n")+1);
 
     get = malloc((strlen(REQUEST_GET)+strlen(uri)+strlen(
-        REQUEST_GET_HTTP))*sizeof(char));
+        REQUEST_GET_HTTP)+1)*sizeof(char));
     if (!get)
     {
         printf("\nmalloc() failed!\n");
         return -1;
     }
     memset(get, 0, strlen(REQUEST_GET)+strlen(uri)+strlen(
-        REQUEST_GET_HTTP));
+        REQUEST_GET_HTTP)+1);
     
-    strcat(get, REQUEST_GET);
+    strcpy(get, REQUEST_GET);
     strcat(get, uri);
     strcat(get, REQUEST_GET_HTTP);
-    strcat(request_head, get);
+    strcpy(request_head, get);
 
-    strcat(host, REQUEST_HOST_TEMP);
+    strcpy(host, REQUEST_HOST_TEMP);
     strcat(host, hostname);
     strcat(host, "\r\n");
+
     strcat(request_head, host);
-
-    strcat(request_head, REQUEST_USERAGENT);
-    
+    strcat(request_head, REQUEST_USERAGENT);   
     strcat(request_head, REQUEST_ACCEPT);
-
     strcat(request_head, "\r\n\r\n");
 
     free(host);

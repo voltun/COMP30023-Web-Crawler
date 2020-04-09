@@ -68,6 +68,9 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     }
 
     parse_valid_url(url_list);
+    
+    free(ori_hostname);
+    free(text);
 
     return url_list;
 }
@@ -97,6 +100,7 @@ int rem_http(char* text)
         strcpy(text, a);
     }
 
+    free(a);
     regfree(&regex);
 
     return 0;

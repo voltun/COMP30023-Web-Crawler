@@ -5,7 +5,7 @@
 #include "../include/parser.h"
 
 #define MAX_URL_LEN 1000
-#define MAX_REQUEST_LEN 1000
+#define MAX_REQUEST_LEN 1024
 #define MAX_BUFFER_LEN 100000
 #define MAX_URL_NUM 100
 #define CLI_INDEX_URL 1
@@ -53,12 +53,12 @@ int main(int argc, char const *argv[])
     do
     {
         count ++;
-        ret_url = (char**)malloc(MAX_URL_NUM*sizeof(char*));
-        for (int i = 0; i < MAX_URL_NUM; i++)
-        {
-            ret_url[i] = malloc(MAX_URL_LEN*sizeof(char));
-            memset(ret_url[i], 0, MAX_URL_LEN);
-        }
+        // ret_url = (char**)malloc(MAX_URL_NUM*sizeof(char*));
+        // for (int i = 0; i < MAX_URL_NUM; i++)
+        // {
+        //     ret_url[i] = malloc(MAX_URL_LEN*sizeof(char));
+        //     memset(ret_url[i], 0, MAX_URL_LEN);
+        // }
         int n = 0;
         char* urlcopy = malloc(MAX_URL_LEN*sizeof(char));
         bzero(urlcopy, MAX_URL_LEN);
@@ -77,6 +77,7 @@ int main(int argc, char const *argv[])
         
         if(visited_url[count] == NULL || visited_url[count][0] == '\0')
         {
+            free(urlcopy);
             break;   
         }
         input_url = visited_url[count];
@@ -89,7 +90,7 @@ int main(int argc, char const *argv[])
 
     //Garbage collection
     free_2d_char(visited_url, MAX_URL_NUM);
-    free(input_url);
+    free_2d_char(ret_url, MAX_URL_NUM);
 
     return 0;
 }
@@ -138,9 +139,15 @@ char** crawl_to(char* url)
     domain_name = split_hostname(url);
     create_request_header(request_head, domain_name, url);
 
+    printf("%s\n", request_head);
+
     //Connect to url via socket and store response in request_head
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
+
+    printf("%s\n", raw_response);
+    
     free(request_head);
+    free(domain_name);
 
     if (raw_response[0] == '\0')
     {
