@@ -16,6 +16,7 @@ int get_full_url(char* url, char* hostname, char* text);
 int parse_valid_url(char**);
 int rem_trail_slash(char*);
 int rem_precede_slash(char*);
+int htm_to_html(char*);
 void rem_whitespace(char*);
 
 /*
@@ -68,7 +69,7 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     }
 
     parse_valid_url(url_list);
-    
+
     free(ori_hostname);
     free(text);
 
@@ -242,6 +243,7 @@ int get_full_url(char* url, char* hostname, char* text)
         exit(EXIT_FAILURE);
     }
     rem_trail_slash(url);
+    htm_to_html(url);
     printf("Regenerated URL: %s\n", url);
     return 0;
 }
@@ -344,6 +346,23 @@ int rem_trail_slash(char* text)
         {
             break;    
         }
+    }
+    return 0;
+}
+
+/*
+ *Changes .htm to .html if any
+ */
+int htm_to_html(char* url)
+{
+    int str_end;
+
+    str_end = strlen(url)-1;
+    if(url[str_end]=='m' && url[str_end-1]=='t'
+    && url[str_end-2]=='h')
+    {
+        url[str_end+1] = 'l';
+        url[str_end+2] = '\0';
     }
     return 0;
 }
