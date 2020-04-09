@@ -144,7 +144,7 @@ char** crawl_to(char* url)
     //Connect to url via socket and store response in request_head
     connect_to(domain_name, request_head, raw_response, MAX_BUFFER_LEN);
 
-    printf("%s\n", raw_response);
+    // printf("%s\n", raw_response);
     
     free(request_head);
     free(domain_name);

@@ -52,6 +52,7 @@ char** parse_html(char* text, char* ori_hostname, int max_url_num, int max_url_l
     body = body + 4;
 
     rem_whitespace(body);
+    printf("\nAFTER WHITESPACE REM:\n%s\n", body);
     for (int i=0; body[i] != '\0'; i++)
     {
         if (isalpha(body[i]))
@@ -149,7 +150,6 @@ void rem_whitespace(char* text)
     {
         while(*temp == ' ')
         {
-            if(*temp)
             ++temp;
         }
     }
